@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>혼자, 더 자유롭게!</title>
+  <style>
+    /* 공통 설정 */
+    html{
+      background-color: #f7e7ca;
+      margin: 0;
+      padding: 0;
+      font-family: 'Noto Sans', sans-serif;
+      height: 100%;
+      overflow: auto;
+      scroll-behavior: smooth;
+      scroll-snap-type: y mandatory; /* 스크롤 스냅 설정 */
+      overflow-x: hidden;
+    }
+    body {
+      margin: 0;
+    }
+    section {
+      width: 100vw;
+      height: 100vh;
+      scroll-snap-align: start; /* 각 섹션이 스크롤될 때 뷰포트에 정렬 */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .container {
+      width: 1420px;
+      height: auto;
+      min-height: 820px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      margin: 0 auto;
+    }
+    /* 첫 번째 화면 */
+    .title-main {
+      color: #2f6d24;
+      font-size: 7em;
+      font-weight: bold;
+      margin: 0;
+      line-height: 1.2;
+    }
+    .subtitle {
+      color: #2f6d24;
+      font-size: 1.5em;
+      margin-top: 1em;
+    }
+    .keyword {
+      color: #2f6d24;
+      position: absolute;
+      animation: floatKeyword 1.5s ease-in-out infinite alternate;
+    }
+    .keyword-1 { top: 10%; left: 28%; animation-delay: 0s; font-size: 18px; }
+    .keyword-2 { top: 20%; right: 30%; animation-delay: 0.5s; font-size: 12px; }
+    .keyword-3 { top: 40%; left: 7%; animation-delay: 1s; font-size: 17px; }
+    .keyword-4 { top: 70%; left: 28%; animation-delay: 1.5s; font-size: 18px; }
+    .keyword-5 { top: 40%; right: 5%; animation-delay: 2s; font-size: 15px; }
+    .keyword-6 { top: 60%; right: 20%; animation-delay: 2.5s; font-size: 14px; }
+    .keyword-7 { top: 20%; left: 38%; animation-delay: 3s; font-size: 12px; }
+
+    .image {
+      position: absolute;
+      animation: floatImage 1.5s ease-in-out infinite alternate;
+    }
+    .image-1 { top: 5%; left: 5%; width: 240px; animation: floatImage1 0.5s ease-in-out infinite alternate; }
+    .image-2 { top: 4%; right: 40%; width: 230px; animation: floatImage2 1.5s ease-in-out infinite alternate; }
+    .image-3 { top: 15%; left: 75%; width: 240px; animation: floatImage3 2s ease-in-out infinite alternate; }
+    .image-4 { top: 60%; left: 5%; width: 230px; animation: floatImage4 1s ease-in-out infinite alternate; }
+    .image-5 { top: 65%; right: 30%; width: 240px; animation: floatImage5 0.5s ease-in-out infinite alternate; }
+    .image-6 { top: 58%; right: 3%; width: 230px; animation: floatImage6 1s ease-in-out infinite alternate; }
+    .image-7 { top: 30%; left: 16%; width: 230px; animation: floatImage7 1.2s ease-in-out infinite alternate; }
+    /* 애니메이션 */
+    @keyframes floatKeyword {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-10px); }
+    }
+    @keyframes floatImage1 {
+      0% { transform: translateY(0) rotate(-20deg); }
+      100% { transform: translateY(-10px) rotate(-20deg); }
+    }
+    @keyframes floatImage2 {
+      0% { transform: translateY(0) rotate(-25deg); }
+      100% { transform: translateY(-10px) rotate(-25deg); }
+    }
+    @keyframes floatImage3 {
+      0% { transform: translateY(0) rotate(30deg); }
+      100% { transform: translateY(-10px) rotate(30deg); }
+    }
+    @keyframes floatImage4 {
+      0% { transform: translateY(0) rotate(-10deg); }
+      100% { transform: translateY(-10px) rotate(-10deg); }
+    }
+    @keyframes floatImage5 {
+      0% { transform: translateY(0) rotate(15deg); }
+      100% { transform: translateY(-10px) rotate(15deg); }
+    }
+    @keyframes floatImage6 {
+      0% { transform: translateY(0) rotate(20deg); }
+      100% { transform: translateY(-10px) rotate(20deg); }
+    }
+    @keyframes floatImage7 {
+      0% { transform: translateY(0) rotate(17deg); }
+      100% { transform: translateY(-10px) rotate(17deg); }
+    }
+
+    .section-2 {
+      width: 1420px;
+      height: 820px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #f7e7ca;
+      padding: 20px;
+      margin: 0 auto;
+      box-sizing: border-box;
+    }
+    .image-left{
+      width: 40%;
+      opacity: 0;
+      transform: translateX(-100%); /* 초기 숨김 상태 */
+      transition: opacity 1s, transform 1s; /* 애니메이션 적용 */
+    }
+    .text-right {
+      width: 55%;
+      color: #2f6d24;
+      font-size: 1.2em;
+      line-height: 1.6;
+      opacity: 0;
+      transform: translateX(-100%); /* 초기 숨김 상태 */
+      transition: opacity 1s, transform 1s; /* 애니메이션 적용 */
+    }
+    .section-title {
+      font-size: 3em;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    @keyframes slideInFromLeft {
+      0% {
+        opacity: 0;
+        transform: translateX(-100%);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    .slide-in {
+      opacity: 1;
+      transform: translateX(0); /* 보이는 상태로 전환 */
+    }
+    .section-3 {
+      width: 1420px;
+      height: 820px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #f7e7ca;
+      padding: 20px;
+      margin: 0 auto;
+      box-sizing: border-box;
+    }
+    .image-right{
+      width: 40%;
+      opacity: 0;
+      transform: translateX(100%); /* 초기 숨김 상태 */
+      transition: opacity 1s, transform 1s; /* 애니메이션 적용 */
+    }
+    .text-left {
+      width: 55%;
+      color: #2f6d24;
+      font-size: 1.2em;
+      line-height: 1.6;
+      opacity: 0;
+      transform: translateX(100%); /* 초기 숨김 상태 */
+      transition: opacity 1s, transform 1s; /* 애니메이션 적용 */
+    }
+    .section-title {
+      font-size: 3em;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    @keyframes slideInFromRight {
+      0% {
+        opacity: 0;
+        transform: translateX(100%);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    .slide-in-right {
+      opacity: 1;
+      transform: translateX(0); /* 보이는 상태로 전환 */
+    }
+    .graph-container{
+      width: 80%;
+      max-width: 1200px;
+      height: 70%;
+      position: relative;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+    .graph-title{
+      color: #2f6d24;
+      font-size: 3em;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 5px;
+      margin-top: 80px;
+    }
+    .point{
+      fill: #2f6d24;
+      r: 5;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+    .graph-line{
+      stroke: #2f6d24;
+      stroke-width: 2;
+      fill: none;
+      stroke-dasharray: 1000;
+      stroke-dashoffset: 1000;
+      transition: stroke-dashoffset 2s ease;
+    }
+    .background-circle{
+      opacity: 0;
+      transition: opacity 1s ease
+    }
+    .show{
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .show-line{
+      stroke-dashoffset: 0;
+    }
+    .show-point{
+      opacity: 1;
+    }
+    .graph-image{
+      width: 100%; /* 적절한 크기로 설정 */
+      position: absolute;
+      z-index: 1; /* 사진을 그래프 뒤로 보내기 위해 낮은 z-index 설정 */
+      margin-top: 200px; /* 사진을 아래로 내리기 위해 마진 추가 */
+    }
+    .title {
+      font-size: 3em;
+      color: #2f6d24;
+      margin-bottom: 50px;
+    }
+    .item-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 30px;
+    }
+    .item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 25%;
+      margin: 0 60px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+    .item img {
+      width: 80%;
+      height: auto;
+      margin-bottom: 10px;
+      transition: transform 0.3s ease;
+    }
+    .item:hover img {
+      transform: scale(1.05);
+    }
+    .item-title, .item-desc {
+      font-size: 1.2em;
+      color: #2f6d24;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .item:hover .item-title, .item:hover .item-desc {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .item-desc {
+      font-size: 0.9em;
+      line-height: 1.4;
+      text-align: center;
+      min-height: 10px;
+    }
+
+ /* 푸터는 스크롤 스냅 속성을 받지 않도록 설정 */
+    footer {
+      width: 100%;
+      background-color: #f7e7ca; /* 배경색 */
+      color: #2f6d24; /* 텍스트 색상 */
+      text-align: center;
+      padding: 20px 0;
+      position: relative; /* 페이지 하단에 위치 */
+      scroll-snap-align: none; /* 스크롤 스냅에서 제외 */
+      z-index: 10;
+      scroll-snap-align: none; /* 스크롤 스냅 애니메이션에서 제외 */
+    }
+  </style>
+</head>
+<body>
+  <section class="container">
+    <h1 class="title-main">혼자,<br>더 자유롭게!</h1>
+    <p class="subtitle">1인 가구의 새로운 일상</p>
+    <div class="keyword keyword-1">자유</div>
+    <div class="keyword keyword-2">자율성</div>
+    <div class="keyword keyword-3">심리적 여유</div>
+    <div class="keyword keyword-4">효율성</div>
+    <div class="keyword keyword-5">독립성</div>
+    <div class="keyword keyword-6">평화로움</div>
+    <div class="keyword keyword-7">자기성장</div>
+    <img src="img/beam.png" class="image image-1" alt="beam">
+    <img src="img/coffee.png" class="image image-2" alt="coffee">
+    <img src="img/flower.png" class="image image-3" alt="flower">
+    <img src="img/mac.png" class="image image-4" alt="mac">
+    <img src="img/running.png" class="image image-5" alt="running">
+    <img src="img/mood.png" class="image image-6" alt="mood">
+    <img src="img/smell.png" class="image image-7" alt="smell">
+  </section>
+  <section class="section-2" id="section-2">
+    <img src="img/man.jpg" alt="초기 1인 가구 이미지" class="image-left">
+    <div class="text-right">
+      <h2 class="section-title">초기 1인 가구는</h2>
+      <p>1인 가구에 대한 초기 부정적 인식은 주로 경제적 불안정과 전통적인 가족 가치와의 충돌에서 비롯되었다. 초기에는 1인가구가 경제적으로 불안정하다는 편견이 많았으며, 특히 청년층은 고용 불안정과 낮은 소득 수준으로 인해 자립이 어려운 상황에 처하는 경우가 많았다. 중장년층의 경우, 가족 가치가 악화되면서 홀로 살아가는 삶을 선택하게 되었고, 이는 전통적인 가정을 꾸리지 못한 것이 실패한 삶이라는 인식과 연결되곤 했다.</p>
+      <p>사회적으로도 1인 가구가 고립되고, 고독사를 겪을 수 있다는 우려가 제기되며, 중장년층의 고립 문제나 사회적 안정만의부재 같은 부정적인 측면이 자주 강조되었다. 특히, 중장년층 1인가구는 경제적 어려움과 함께 정신적인 고립감도 문제가 되었고, 청년층의 경우 불안정한 취업 상태와 결혼 및 출산에 대한 사회적 압력에서 벗어나는 선택으로 비판받기도 했다.</p>
+      <p>이러한 초기 부정적인 인식에도 불구하고, 시간이 지나면서 점차 1인 가구에 대한 긍정적인 변화가 일어나기 시작했다.</p>
+    </div>
+  </section>
+  <section class="section-3" id="section-3">
+    <div class="text-left">
+      <h2 class="section-title">현재 1인 가구는</h2>
+      <p>1인 가구의 증가율에 관한 한국 뉴스에서 나온 최신 통계에 따르면, 2021년 기준 1인 가구는 전체 가구의 33.4%로, 약 716만 6천 가구를 차지하고 있다. 연령대별로는 29세 이하가 19.8%, 70세 이상이 18.1%, 30대가 17.1%로 나타났다. 특히, 앞으로 2030년까지 1인 가구의 비율이 35.6%, 2050년에는 39.6%에 이를 것으로 예상되고 있다. 지역별로는 대전(37.6%), 서울(36.8%)이 가장 높은 비율을 보였다.</p>
+      <p>또한, 1인 가구는 소비 형태에서도 변화를 일으키고 있다. 예를 들어, 대형마트에서 1~2인 가구를 위한 소포장 상품들이 많이 늘어나고 있으며, 소형 가전제품에 대한 수요도 증가하고 있다. 이는 더 작은 주거 공간에 맞추어 효율적인 소비를 지향하는 1인 가구의 특성을 반영한 결과이다.</p>
+    </div>
+    <img src="img/girl.jpg" alt="현재 1인 가구 이미지" class="image-right">
+  </section>
+  <section class="container graph-container" id="graphContainer" style="width: 1420px; height: 820px; position: relative;">
+    <h1 class="graph-title" style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); z-index: 3;">우리나라 1인 가구 수 추이</h1>
+    <img src="img/graph.png" class="graph-image" style="position: relative; z-index: 1;">
+    <svg width="100%" height="100%" style="position: absolute; top: 0; left: 0; z-index: 2;"> <!-- SVG의 z-index를 높여 이미지 위로 나타나도록 설정 -->
+      <polyline class="graph-line" id="graphLine" points="195,530 398,440 598,370 797,310 1000,270" />
+      <circle cx="195" cy="530" r="30" fill="#a6cba6" class="background-circle" />
+      <circle cx="195" cy="530" class="point" r="5" />
+      <circle cx="398" cy="440" r="45" fill="#a6cba6" class="background-circle" />
+     <circle cx="398" cy="440" class="point" r="5" />
+     <circle cx="598" cy="370" r="50" fill="#a6cba6" class="background-circle" />
+     <circle cx="598" cy="370" class="point" r="5" />
+     <circle cx="797" cy="310" r="60" fill="#a6cba6" class="background-circle" />
+     <circle cx="797" cy="310" class="point" r="5" />
+     <circle cx="1000" cy="270" r="75" fill="#a6cba6" class="background-circle" />
+     <circle cx="1000" cy="270" class="point" r="5" />
+    </svg>
+  </section>
+  <section class="container">
+    <h1 class="title">1인 가구를 위한 제품들</h1>
+    <div class="item-row">
+      <div class="item" id="item1" style="opacity: 1; transform: translateY(0);">
+        <img src="img/1.png" alt="미니 냉장고">
+        <div class="item-title">미니 냉장고</div>
+        <div class="item-desc">소형 주방에 적합하며, 적은 양의</div>
+        <div class="item-desc">식품 보관 가능</div>
+      </div>
+      <div class="item" id="item2" style="opacity: 1; transform: translateY(0);">
+        <img src="img/2.png" alt="밀키트">
+        <div class="item-title">밀키트</div>
+        <div class="item-desc">요리 시간을 절약하면서도</div>
+        <div class="item-desc">건강한 식사 가능</div>
+      </div>
+      <div class="item" id="item3" style="opacity: 1; transform: translateY(0);">
+        <img src="img/3.png" alt="미니 건조기">
+        <div class="item-title">미니 건조기</div>
+        <div class="item-desc">작은 세탁량에 맞춘 소형 건조기</div>
+      </div>
+      <div class="item" id="item4" style="opacity: 1; transform: translateY(0);">
+        <img src="img/4.png" alt="소형 밥솥">
+        <div class="item-title">소형 밥솥</div>
+        <div class="item-desc">1~2인분의 밥을 지을 수 있는</div>
+        <div class="item-desc">소형 전기밥솥</div>
+      </div>
+    </div>
+  
+    <div class="item-row">
+      <div class="item" id="item5" style="opacity: 1; transform: translateY(0);">
+        <img src="img/5.png" alt="1인용 리클라이너">
+        <div class="item-title">1인용 리클라이너</div>
+        <div class="item-desc">혼자서 편하게 앉거나 눕기 좋아</div>
+        <div class="item-desc">작은 공간에 잘 어울림</div>
+      </div>
+      <div class="item" id="item6" style="opacity: 1; transform: translateY(0);">
+        <img src="img/6.png" alt="소분된 식재료">
+        <div class="item-title">소분된 식재료</div>
+        <div class="item-desc">1인 가구용으로 소분된 식재료로</div>
+        <div class="item-desc">음식 낭비를 줄임</div>
+      </div>
+      <div class="item" id="item7" style="opacity: 1; transform: translateY(0);">
+        <img src="img/7.png" alt="로봇청소기">
+        <div class="item-title">로봇청소기</div>
+        <div class="item-desc">바쁜 1인 가구에게 유용하며, 먼지나</div>
+        <div class="item-desc">머리카락을 쉽게 제거 가능</div>
+      </div>
+      <div class="item" id="item8" style="opacity: 1; transform: translateY(0);">
+        <img src="img/8.png" alt="스탠바이미">
+        <div class="item-title">스탠바이미</div>
+        <div class="item-desc">개인 TV 겸 모니터로 맞춤형으로</div>
+        <div class="item-desc">활용 가능</div>
+      </div>
+    </div>
+    <footer class="footer">
+      <div class="footer-content">
+        <p>© 혼자, 더 자유롭게! | 김유진, 왕채은</p>
+        <p>2024 한경국립대학교 시각영상디자인학과 디지털퍼블리싱2</p>
+      </div>
+    </footer> 
+  </section>
+
+  <script>
+    window.addEventListener('scroll', () => {
+      const section2 = document.getElementById('section-2');
+      const section3 = document.getElementById('section-3');
+      const graphContainer = document.getElementById('graphContainer');
+      const graphLine = document.getElementById('graphLine');
+      const points = document.querySelectorAll('.point');
+      const backgroundCircles = document.querySelectorAll('.background-circle');
+      const screenPosition = window.innerHeight / 1.3; // 뷰포트의 위치 조정
+  
+      if (section2.getBoundingClientRect().top < screenPosition) {
+        section2.querySelector('.image-left').classList.add('slide-in');
+        section2.querySelector('.text-right').classList.add('slide-in');
+      }
+      if (section3.getBoundingClientRect().top < screenPosition) {
+        section3.querySelector('.image-right').classList.add('slide-in-right');
+        section3.querySelector('.text-left').classList.add('slide-in-right');
+      }
+      if (graphContainer.getBoundingClientRect().top < screenPosition) {
+        graphContainer.classList.add('show');
+        graphLine.classList.add('show-line');
+        points.forEach((point, index) => {
+          setTimeout(() => {
+            point.classList.add('show-point');
+            backgroundCircles[index].style.opacity = '0.5';
+          }, index * 500);
+        });
+      }
+    });
+  </script>
+  
+</body>
+</html>
